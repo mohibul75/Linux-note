@@ -17,6 +17,7 @@
 * To see difference between logname and whoami command, use them with sudo.
 -----------------
 ## User Management
+--------------------------
 |command|Description|
 |----|---|
 |useradd|to add a new user|
@@ -25,3 +26,13 @@
 |passwd|to modify user's password|
 |chfn|to change user's info|
 |chsh|to change user's shell|
+
+
+## Group Management
+--------------------------
+|command|Description|
+|----|-----|
+|group|Print all the groups of current user|
+|groupadd|Create a group|
+|groupmod|Modify a group|
+|groupdel| Delete a group|
