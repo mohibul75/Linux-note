@@ -5,10 +5,15 @@ The lsof command stands for "list of open files", and on Linux/Unix, everything 
 The output format of the lsof command includes information such as the process ID (PID), user ID (UID), file descriptor (FD), type of file, and file name/path. Here's an example of what the output might look like:
 
 COMMAND |   PID     | USER | FD  |  TYPE    |DEVICE |SIZE/OFF   |NODE NAME
+
 bash    |   1234    | user | cwd |   DIR    | 8,3   |   4096    |  2 /root
+
 bash    |   1234    | user | rtd |   DIR    |8,3    |   4096    | 2 /root
+
 bash    |    1234  |  user | txt  |  REG   | 8,3   |1036616 |   |968988 /bin/bash
+
 bash    | 1234   | user | mem   | REG |  8,3 |   61912 | 24856 |  /lib/x86_64-linux-gnu/libnss_files-2.31.so
+
 
 
 To see a complete list of available options, you can use the lsof -h command. This will display the help menu, which provides a detailed description of each option, along with any required or optional arguments.
@@ -32,3 +37,5 @@ We can be used this command to list all the listening port by using **LISTEN** f
 ```sh
 lsof -i -P -n | grep LISTEN
 ```
+
+
