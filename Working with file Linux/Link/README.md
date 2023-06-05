@@ -26,6 +26,6 @@ ln <target_file> <link_name>
 
 Replace <target_file> with the path to the original file and <link_name> with the desired name/location of the hard link.
 
-[Hard link vs soft link](./link.png)
+![Hard link vs soft link](./link.png)
 
 However, it's important to note that deleting the original file does not affect hard links, as they are separate names pointing to the same file. Deleting a symbolic link does not delete the target file either; it simply removes the link itself. But when you delete the orginal file or directory , symbolic link will not work.
