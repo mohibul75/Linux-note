@@ -50,3 +50,34 @@ Major Number are assigned by the kernel maintainers. Some example of kernel numb
 ## Minor Number
 Using the Linux SCSI driver, partitions are limited to a maximum 15 per disk. Each disk has pre-assigned. sda=8:0; sdb=8:16; sdc=8:32 to sdo=8:240.
 
+# Creating Raw Disk File
+We have already known that we can mount ISO files as loop devices. Well, We may also make use of raw disk files, these can be created with either ***dd*** or ***fallocate*** . The command time can prefer any command to display execution time.
+
+```sh
+time dd if=/dev/zero of=dd.disk bs=1M count=500
+time fallocate -l 500M fa.disk
+```
+## Creating Loop Device
+```sh
+sudo losetup -f <disk_file> # attch next available loop device
+sudo losetup /dev/loop1 /var/disks/disk1 # attach loop 1
+losetup # list all loop disks
+sudo losetup -d /dev/loop0 # delete or detach loop0
+sudo losetup -D # detach all loop devices
+```
+## Usage of above Commands
+- With ***fallocate*** command, we can create the disk file
+- WIth ***losetup*** command, we can use to create the device file linking to the backend storage file.
+
+## Why Partition
+Complete disks can be used for filesystems, but breaking the disk into smaller elements may be more practical in some situations.
+
+## Partition Tables
+
+| MBR or MSDOS TABLE | GPT/GUID Partition Table |
+|---|---|
+|Max 2TB in size|Max 8ZB in size|
+|Max 4 primary or 3 primary partitions, 1 extended plus logical| Max 255 partitions per disk in Linux depending on the  driver used|
+
+
+
