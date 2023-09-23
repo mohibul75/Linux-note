@@ -93,3 +93,19 @@ sudo parted /dev/loop1 mklabel1 msdos mkpart primary 0% 25%
 # File System
 To use the partition, we need to add a filesystem.
 
+# Device Name Transitory
+- The disk sda may be sda today but if it is not the first disk detected on the next boot it will not be sda, it could be sdb.
+- File systems can be optional assigned with a label to identify them.
+- All FIle systems have a UUID that uniquely identifies that file system.
+- Adding a filesystem, we can mount the device using persistant names.
+```sh
+sudo mkfs.xfs -L "DATA" /dev/loop1
+sudo mount LABEL=DATA /mnt
+mount -t XFS # lists all xfs filesystems
+sudo unmount /mnt
+sudo blkid /dev/loop1p1 # prints UUID
+sudo mount UUID="uuid" /mnt # another way 
+```
+To make thr mount at the system boot time, set it in /etc/fstab
+
+
