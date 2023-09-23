@@ -79,5 +79,17 @@ Complete disks can be used for filesystems, but breaking the disk into smaller e
 |Max 2TB in size|Max 8ZB in size|
 |Max 4 primary or 3 primary partitions, 1 extended plus logical| Max 255 partitions per disk in Linux depending on the  driver used|
 
+# Partitioning Disks
+Loop devices appear exactly the same as any other block device. So, partitioning is the same.
+The traditional utility is fdisk(mbr) and gdisk(gpt) disks and it is interative parted can be used interactively but also directly at the cli.
 
+```sh
+sudo mkdir /var/disks
+sudo fallocate -l LG /var/disks/disk1
+sudo losetup /dev/loop1 /var/disks/disk1
+sudo fdisk /dev/loop1
+sudo parted /dev/loop1 mklabel1 msdos mkpart primary 0% 25%
+```
+# File System
+To use the partition, we need to add a filesystem.
 
