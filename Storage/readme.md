@@ -108,4 +108,33 @@ sudo mount UUID="uuid" /mnt # another way
 ```
 To make thr mount at the system boot time, set it in /etc/fstab
 
+# Persisting Loop Devices
+If you ever need to reboot the system, loop devices will be lost and have to be restored.
+```sh
+sudo reboot
+lsblk /dev/loop1 # loop device will not be found
+sudo losetup /dev/loop1 /var/disks/disk1
+lsblk /dev/loop1 # loop device create. now need to create partitions
+sudo partprobe /dev/loop1
+```
+### Service Unit persisting loop device
+```sh
+[Unit]
+Description=Setup Loop Device
+DefaultDependencies=no
+Before=local-fs.target
+After=systemd-udevd.service
+Required=systemd-udevd.service
+
+[Service]
+Type=oneshot
+ExecStart=/sbin/losetup /dev/loop1 /var/disks/disk1
+ExecStart=/sbin/partprobe /dev/loop1
+TimeoutSec=60
+RemainAfterExit=no
+
+[Install]
+WantedBy=local-fs.target
+```
+
 
