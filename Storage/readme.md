@@ -136,5 +136,24 @@ RemainAfterExit=no
 [Install]
 WantedBy=local-fs.target
 ```
+# Logical Volume Management
+Aggregating block storage to re-allocate as needed in the form of device-mapper volumes.
+
+### Viewing LVM
+By default, LVM setups are used in many distribution including RHEL. LVM volumes use the device mapper driver, dm_mod
+```sh
+lsblk /dev/sda2
+sudo dmsetup ls --tree # list device mapper devices in tree format
+```
+
+### Partitions Types
+Altrough not strictly neccessary we can set the partition type to LVM allowing the system to know more about how the partition should be used.
+```sh
+sudo parted /dev/loop1 mkpart primary 25% 50% set 2 lvm on
+sudo parted /dev/loop1 mkpart primary 50% 75% set 3 lvm on
+sudo parted /dev/loop1 mkpart primary 75% 100% set 4 lvm on
+sudo parted /dev/loop1 print
+sudo part /dev/loop1
+```
 
 
