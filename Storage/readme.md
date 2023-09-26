@@ -155,5 +155,21 @@ sudo parted /dev/loop1 mkpart primary 75% 100% set 4 lvm on
 sudo parted /dev/loop1 print
 sudo parted /dev/loop1
 ```
-
+# LVM2 Storage Layers
+### Logical Volumes
+Dev-mapper devices which are formatted and presented to the consumer as a block device.
+### Volume Group
+Volume group act as storage pools, aggregating storage together and overcoming the limitations of physical storage size.
+### Physical Volumes
+Physical storage existing on the host as disks, partitions and raw files.
+## Managing LVM
+|Physical Volume|Volume Group|Logical Volumes|
+|--|--|--|
+|pvs, pvmove, pvcreate|vgcreate, vgs, vgdisplay|lvs, lvcreate, lvsize, lvdisplay|
+```sh
+sudo pvs
+pv # to show all command start with pv
+sudo vgs # scan volume group
+sudo vgdisplay # print all volume group details
+```
 
