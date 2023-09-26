@@ -172,4 +172,33 @@ pv # to show all command start with pv
 sudo vgs # scan volume group
 sudo vgdisplay # print all volume group details
 ```
+## Physical Volume Options
+We can skip the seperate definition of our physical volume unless we need to control the meta-data storage. Physical volumes will be defined with the volume group.
+### Volume Group Physical Extent size
+The default PE size is 4M and affects all physical volumes in a volume group. The setting was more important in LVM1 when there was a limitation of 65k extents within a volume group, this is not the case with LVM2. Setting a larger PE size now has more of an affect when striping data with RAID in LVM.
+```sh
+sudo vgcreate vg1 -v -s 8m /dev/loop1p1
+```
+### Creating Logical Volumes
+WHen defining logical volumes we can use -L to specify the desired size that will be adjusted to the nearest matching multiples of the PE size.
+Using -l we can specify the number of extents to use 12 extents would be 96M where 8M extent size is set.
+```sh
+sudo lvcreate -n lv1 -L 100M vg1
+sudo lvcreate -n lv2 -l 12 vg1
+sudo lvs vg1
+```
+
+```sh
+pvs
+pvcreate /dev/loop1p2
+vgcreate -v vg1 /dev/loop1p2
+vgdisplay vg1
+vgremove vg1
+pvremove /dev/loop1p2
+pvcreate -- /dev/loop1p1 # will show all options for pvcreate
+lvs vg1
+lvcreate -n lv1 -L 100M vg1
+lvcreate -n lv2 -L 13M v1
+lvs vg1
+```
 
