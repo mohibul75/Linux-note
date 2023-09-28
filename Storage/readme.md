@@ -180,7 +180,7 @@ The default PE size is 4M and affects all physical volumes in a volume group. Th
 sudo vgcreate vg1 -v -s 8m /dev/loop1p1
 ```
 ### Creating Logical Volumes
-WHen defining logical volumes we can use -L to specify the desired size that will be adjusted to the nearest matching multiples of the PE size.
+When defining logical volumes we can use -L to specify the desired size that will be adjusted to the nearest matching multiples of the PE size.
 Using -l we can specify the number of extents to use 12 extents would be 96M where 8M extent size is set.
 ```sh
 sudo lvcreate -n lv1 -L 100M vg1
@@ -200,5 +200,38 @@ lvs vg1
 lvcreate -n lv1 -L 100M vg1
 lvcreate -n lv2 -L 13M v1
 lvs vg1
+```
+# Dynamic Vloumes
+### Dynamically expand volumes online
+One major advantage of logical volumes is that their available space can be expanded easily while the filesystem is still in use and mounted.
+### Volume Groups
+New physical storage can be added to volume groups. As, these groups aggregate storage, volumes can be expanded from the newly assigned space.
+Use vgextend to increase volume group size.
+Use lvextend to increase LV size with -r to resize ext4 or xfs.
+
+### Extending Volume groups, Logical volume file system
+```sh
+lvs
+vachange -a y vg1
+# Following both commands are same
+mkfs.xfs /dev/vg1/lv1
+mkfs.xfs /dev/mapper/vg1/lv1
+
+mkdir -p /lv/lv{1,2}
+
+mount /dev/vg1/lv1 /lv/lv1
+mount /dev/vg1/lv2/lv/lv2
+# Copy data to lv1
+find /usr/share/doc -name '*.html' -exec cp{} /lv/lv1 \
+lvs
+vgs vg1
+df -h
+
+# extending
+lvextend -r -l +100% FREE vg1/lv1
+vgs vg1
+vgextend -v vg1 /dev/loop1p3
+lvextend -r -L +104M vg1/lv2
+
 ```
 
