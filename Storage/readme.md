@@ -234,4 +234,27 @@ vgextend -v vg1 /dev/loop1p3
 lvextend -r -L +104M vg1/lv2
 
 ```
-
+# Virtual Memory
+Virtual memory in Linux is known as swap space. Logical volumes can be used as swap space and are used by deafult in RHEL 8. Swap space is not formatted as such but headers added using command mkswap.
+```sh
+swapon -s
+free -m
+sudo mkswap /dev/vg1/swap
+swapon -a
+```
+### Adding swap space from logical volumes
+```sh
+free
+free -b # byte
+free -k # kilobyte
+free -m # megabyte
+free -g # gigabyte
+free -h
+swapon -s
+lvcreate -n swap -L 104m vg1
+mkswap /dev/vg1/swap
+swapon -p 10 /dev/mapper/vg1-swap
+swapon -s
+vi /etc/fstab
+# create new entry for new swap space for new swap space with priority (like "pri=3")
+```
