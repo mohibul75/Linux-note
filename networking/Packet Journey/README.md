@@ -7,3 +7,7 @@ The first header of packet is Ethernet header which is also called L2 header. Th
 The packet starts its journey by arriving at the NIC (Network Interface Controller) through either the airwaves or an Ethernet connection. The NIC is the first to receive the packet and then checks it against a MAC address filter. You can bypass this filter by enabling promiscuous mode. When this mode is on, there's no need to compare MAC addresses.
 
 After that, the packet's Frame Checksum (FCS) is verified to ensure it hasn't been corrupted. Once confirmed, the packet is stored in the system memory using Direct Memory Access (DMA). This process is managed by a pre-programmed driver. The packets find their place in a buffer, and the driver allocates free memory for them, instructing the NIC about the buffer locations. This entire process is known as the ingress road.
+
+Following that, an interrupt occurs to notify the CPU that a new packet has arrived home and might need its attention. The CPU acknowledges the interrupt and schedules a process. This process identifies the memory location where the packet is stored, determining which buffer contains the packet.
+
+A socket buffer (sk_buffer or skb) is then allocated, serving as a data structure in memory that holds metadata about the packet. This includes information such as the protocol (Ethernet type) and receiving interface (packet type). The process further configures the sk_buffer by setting MAC headers, removing (pulling) the Ethernet header, and then pushing the sk_buffer to the network stack for further handling.
